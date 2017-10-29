@@ -39,29 +39,36 @@
 
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.neo4j/neo4j-cypher -->
-      <!--  <dependency>
+        <dependency>
             <groupId>org.neo4j</groupId>
             <artifactId>neo4j-cypher</artifactId>
             <version>3.2.2</version>
-        </dependency>-->
+        </dependency>
         <!-- https://mvnrepository.com/artifact/org.neo4j/neo4j-kernel -->
-        <!--<dependency>
+        <dependency>
             <groupId>org.neo4j</groupId>
             <artifactId>neo4j-kernel</artifactId>
             <version>3.2.2</version>
-        </dependency>-->
+        </dependency>
         <!-- https://mvnrepository.com/artifact/org.neo4j.driver/neo4j-java-driver -->
         <dependency>
             <groupId>org.neo4j.driver</groupId>
             <artifactId>neo4j-java-driver</artifactId>
             <version>1.4.4</version>
         </dependency>
-       <!-- &lt;!&ndash; https://mvnrepository.com/artifact/org.neo4j.app/neo4j-server &ndash;&gt;
+        <!-- https://mvnrepository.com/artifact/org.neo4j/neo4j-jdbc-driver -->
         <dependency>
-            <groupId>org.neo4j.app</groupId>
-            <artifactId>neo4j-server</artifactId>
-            <version>3.2.2</version>
-        </dependency>-->
+            <groupId>org.neo4j</groupId>
+            <artifactId>neo4j-jdbc-driver</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+
+        <!-- &lt;!&ndash; https://mvnrepository.com/artifact/org.neo4j.app/neo4j-server &ndash;&gt;
+         <dependency>
+             <groupId>org.neo4j.app</groupId>
+             <artifactId>neo4j-server</artifactId>
+             <version>3.2.2</version>
+         </dependency>-->
         <!-- mybatis -->
         <dependency>
             <groupId>org.mybatis</groupId>

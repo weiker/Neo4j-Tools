@@ -1,6 +1,7 @@
 package com.yiche.psc.rpse.neo4jTools.core;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.druid.pool.DruidPooledConnection;
 import org.springframework.context.annotation.Bean;
 
 import javax.sql.DataSource;
@@ -17,30 +18,14 @@ public class MysqlConnector {
     public static final String user = "root";
     public static final String password = "xyj2016";
 
-    private DruidDataSource ds;
-    public Connection conn = null;
+    private static DruidDataSource ds;
+    public DruidPooledConnection conn = null;
 
-    public static String getUrl() {
-        return url;
-    }
-
-    public static String getName() {
-        return name;
-    }
-
-    public static String getUser() {
-        return user;
-    }
-
-    public static String getPassword() {
-        return password;
-    }
-
-    public Connection getConn() {
+    public DruidPooledConnection getConn() {
         return conn;
     }
 
-    public void setConn(Connection conn) {
+    public void setConn(DruidPooledConnection conn) {
         this.conn = conn;
     }
 
@@ -53,18 +38,27 @@ public class MysqlConnector {
     }
 
     public PreparedStatement pst = null;
-
-    public MysqlConnector(String sql) {
+    static {
         try {
-//            Class.forName(name);//指定连接类型
-//            conn = DriverManager.getConnection(url, user, password);//获取连接
             ds = new DruidDataSource();
-            ds.setDriverClassName(this.name);
+            ds.setDriverClassName(name);
             ds.setUsername(user);
             ds.setPassword(password);
             ds.setUrl(url);
+            ds.setTestWhileIdle(false);
+            ds.setMaxActive(2);
+            ds.setInitialSize(2);
+            ds.setMaxWait(60000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public MysqlConnector() {
+        try {
+//            Class.forName(name);//指定连接类型
+//            conn = DriverManager.getConnection(url, user, password);//获取连接
             conn=ds.getConnection();
-            pst = conn.prepareStatement(sql);//准备执行语句
+//            pst = conn.prepareStatement(sql);//准备执行语句
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -7,6 +7,7 @@ import com.yiche.psc.rpse.neo4jTools.core.MysqlConnector;
 import com.yiche.psc.rpse.neo4jTools.core.SearchStyleInfoService;
 
 import javax.xml.transform.Result;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,31 +17,38 @@ public class MysqlDataHandler {
 
     private MysqlConnector mysqlConnector;
 
-    public ResultSet getResult(String sql){
-        ResultSet resultSet=null;
-        mysqlConnector=new MysqlConnector(sql);
-        PreparedStatement preparedStatement=mysqlConnector.getPst();
+    public ResultSet getResult(String sql) {
+        ResultSet resultSet = null;
+        if(mysqlConnector==null){
+            mysqlConnector = new MysqlConnector();
+        }
+        Connection connection = mysqlConnector.getConn();
         try {
-            resultSet=preparedStatement.executeQuery();
-
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return resultSet;
     }
 
-    public void closeConn(){
+    public void closeConn() {
         mysqlConnector.close();
     }
 
-    public Map<String,String> handleStyleinfo(int styleID){
-        String sql="SELECT *   FROM `StyleProperty` where styleID="+styleID;
-        ResultSet resultSet=getResult(sql);
-        Map<String,String> propertyMap=new HashMap<>();
+    public Map<String, String> handleStyleinfo(int styleID) {
+        String sql = "SELECT *   FROM cigdc_yiche.StyleProperty where styleID=" + styleID;
+        ResultSet resultSet = getResult(sql);
+        Map<String, String> propertyMap = new HashMap<>();
         try {
-            while(resultSet.next()){
-                propertyMap.put(String.valueOf(resultSet.getInt(2)),String.valueOf(resultSet.getInt(4)));
-                propertyMap.put(resultSet.getString(3),resultSet.getString(5));
+            while (resultSet.next()) {
+
+                String valueString=resultSet.getInt(2)+"="+resultSet.getInt(4);
+                if(propertyMap.containsKey("PropertyMap")){
+                    valueString=propertyMap.get("PropertyMap")+","+valueString;
+                }
+                propertyMap.put("PropertyMap",valueString);
+                propertyMap.put(resultSet.getString(3), resultSet.getString(5));
 //                Styleproperty styleproperty=new Styleproperty();
 //                styleproperty.setStyleid(resultSet.getInt(1));
 //                styleproperty.setPropertyid(resultSet.getInt(2));
@@ -55,14 +63,14 @@ public class MysqlDataHandler {
         return propertyMap;
     }
 
-    public Set<Style> getStyleInfo(){
-        String sql="SELECT *   FROM Style";
-        ResultSet resultSet=getResult(sql);
-        HashSet<Style> styleHashSet=new HashSet<Style>();
+    public Set<Style> getStyleInfo() {
+        String sql = "SELECT *   FROM Style";
+        ResultSet resultSet = getResult(sql);
+        HashSet<Style> styleHashSet = new HashSet<Style>();
         try {
 
-            while(resultSet.next()){
-                Style style=new Style();
+            while (resultSet.next()) {
+                Style style = new Style();
                 style.setId(resultSet.getInt(1));
                 style.setModelid(resultSet.getInt(2));
                 style.setYear(resultSet.getInt(3));
@@ -95,37 +103,38 @@ public class MysqlDataHandler {
 
     }
 
-    public Map<String,String> putAutoHomeData(Map<String,String> property, int styleID){
-        SearchStyleInfoService searchStyleInfoService=new SearchStyleInfoService();
-        StyleInfo styleInfo=searchStyleInfoService.getStyleInfo("test",styleID);
-        property.put("comfortable_long_comment",styleInfo.getComfortable().getZhiJia_description());
-        property.put("comfortable_long_comment",styleInfo.getComfortable().getZhiJia_description());
-        property.put("comfortable_long_comment",styleInfo.getComfortable().getZhiJia_description());
-        property.put("comfortable_long_comment",styleInfo.getComfortable().getZhiJia_description());
-        property.put("comfortable_long_comment",styleInfo.getComfortable().getZhiJia_description());
-        property.put("comfortable_long_comment",styleInfo.getComfortable().getZhiJia_description());
-        property.put("comfortable_long_comment",styleInfo.getComfortable().getZhiJia_description());
-        property.put("comfortable_long_comment",styleInfo.getComfortable().getZhiJia_description());
-        property.put("comfortable_long_comment",styleInfo.getComfortable().getZhiJia_description());
+    public Map<String, String> putAutoHomeData(Map<String, String> property, int styleID) {
+        SearchStyleInfoService searchStyleInfoService = new SearchStyleInfoService();
+        StyleInfo styleInfo = searchStyleInfoService.getStyleInfo("test", styleID);
+        property.put("comfortable_long_comment", styleInfo.getComfortable().getZhiJia_description());
+        property.put("comfortable_long_comment", styleInfo.getComfortable().getZhiJia_description());
+        property.put("comfortable_long_comment", styleInfo.getComfortable().getZhiJia_description());
+        property.put("comfortable_long_comment", styleInfo.getComfortable().getZhiJia_description());
+        property.put("comfortable_long_comment", styleInfo.getComfortable().getZhiJia_description());
+        property.put("comfortable_long_comment", styleInfo.getComfortable().getZhiJia_description());
+        property.put("comfortable_long_comment", styleInfo.getComfortable().getZhiJia_description());
+        property.put("comfortable_long_comment", styleInfo.getComfortable().getZhiJia_description());
+        property.put("comfortable_long_comment", styleInfo.getComfortable().getZhiJia_description());
         return property;
     }
 
     public static void main(String[] args) {
-        MysqlDataHandler mysqlDataHandler=new MysqlDataHandler();
-        Set<Style> styleSet=mysqlDataHandler.getStyleInfo();
-        for(Style style:styleSet){
-            if(style.getId()==122264){
-                System.out.println("pause");
-            }
-//            Set<Styleproperty> stylepropertySet=mysqlDataHandler.handleStyleinfo(style.getId());
-//            System.out.println("styleID:"+style.getId()+"  size:"+stylepropertySet.size());
-//            if(stylepropertySet.size()>0) {
-//                Neo4jDataHandler neo4jDataHandler = new Neo4jDataHandler();
-//
-//
-//                neo4jDataHandler.updateNodeProperty("Style", stylepropertySet, style.getId());
+        MysqlDataHandler mysqlDataHandler = new MysqlDataHandler();
+        Set<Style> styleSet = mysqlDataHandler.getStyleInfo();
+        int hasProperty=0;
+        for (Style style : styleSet) {
+            Map<String, String> stylePropertyMap = mysqlDataHandler.handleStyleinfo(style.getId());
+            Map<String, String> styleConditionMap = new HashMap<>();
+            styleConditionMap.put("Id", style.getId().toString());
+            System.out.println("styleID:" + style.getId() + "  size:" + stylePropertyMap.size());
+            if (stylePropertyMap.size() > 0) {
+                Neo4jDataHandler neo4jDataHandler = new Neo4jDataHandler();
+                neo4jDataHandler.updateNodeProperty("Style", stylePropertyMap, styleConditionMap);
+                hasProperty++;
+                System.out.println("total Property Style:"+hasProperty);
             }
         }
-//        mysqlDataHandler.closeConn();
-    }
 
+        mysqlDataHandler.closeConn();
+    }
+}
