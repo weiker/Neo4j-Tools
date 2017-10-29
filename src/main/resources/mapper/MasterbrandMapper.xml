@@ -1,0 +1,766 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiche.psc.rpse.neo4jTools.common.domain.dao.MasterbrandMapper">
+  <resultMap id="BaseResultMap" type="com.yiche.psc.rpse.neo4jTools.common.domain.po.Masterbrand">
+    <result column="Id" jdbcType="INTEGER" property="id" />
+    <result column="Name" jdbcType="VARCHAR" property="name" />
+    <result column="OtherName" jdbcType="VARCHAR" property="othername" />
+    <result column="EnglishName" jdbcType="VARCHAR" property="englishname" />
+    <result column="CountryId" jdbcType="INTEGER" property="countryid" />
+    <result column="LogoUrl" jdbcType="VARCHAR" property="logourl" />
+    <result column="FirstZiMu" jdbcType="CHAR" property="firstzimu" />
+    <result column="Spell" jdbcType="VARCHAR" property="spell" />
+    <result column="AllSpell" jdbcType="VARCHAR" property="allspell" />
+    <result column="NameSpell" jdbcType="VARCHAR" property="namespell" />
+    <result column="NameAllSpell" jdbcType="VARCHAR" property="nameallspell" />
+    <result column="SaleStatus" jdbcType="INTEGER" property="salestatus" />
+    <result column="IsEnabled" jdbcType="BIT" property="isenabled" />
+    <result column="IsRemoved" jdbcType="BIT" property="isremoved" />
+    <result column="CreateTime" jdbcType="VARCHAR" property="createtime" />
+    <result column="UpdateTime" jdbcType="VARCHAR" property="updatetime" />
+    <result column="dotime" jdbcType="VARCHAR" property="dotime" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yiche.psc.rpse.neo4jTools.common.domain.po.MasterbrandWithBLOBs">
+    <result column="LogoMeaning" jdbcType="LONGVARCHAR" property="logomeaning" />
+    <result column="Introduction" jdbcType="LONGVARCHAR" property="introduction" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    Id, Name, OtherName, EnglishName, CountryId, LogoUrl, FirstZiMu, Spell, AllSpell, 
+    NameSpell, NameAllSpell, SaleStatus, IsEnabled, IsRemoved, CreateTime, UpdateTime, 
+    dotime
+  </sql>
+  <sql id="Blob_Column_List">
+    LogoMeaning, Introduction
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.yiche.psc.rpse.neo4jTools.common.domain.po.MasterbrandExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from MasterBrand
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.yiche.psc.rpse.neo4jTools.common.domain.po.MasterbrandExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from MasterBrand
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.yiche.psc.rpse.neo4jTools.common.domain.po.MasterbrandExample">
+    delete from MasterBrand
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.yiche.psc.rpse.neo4jTools.common.domain.po.MasterbrandWithBLOBs">
+    insert into MasterBrand (Id, Name, OtherName, 
+      EnglishName, CountryId, LogoUrl, 
+      FirstZiMu, Spell, AllSpell, 
+      NameSpell, NameAllSpell, SaleStatus, 
+      IsEnabled, IsRemoved, CreateTime, 
+      UpdateTime, dotime, LogoMeaning, 
+      Introduction)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{othername,jdbcType=VARCHAR}, 
+      #{englishname,jdbcType=VARCHAR}, #{countryid,jdbcType=INTEGER}, #{logourl,jdbcType=VARCHAR}, 
+      #{firstzimu,jdbcType=CHAR}, #{spell,jdbcType=VARCHAR}, #{allspell,jdbcType=VARCHAR}, 
+      #{namespell,jdbcType=VARCHAR}, #{nameallspell,jdbcType=VARCHAR}, #{salestatus,jdbcType=INTEGER}, 
+      #{isenabled,jdbcType=BIT}, #{isremoved,jdbcType=BIT}, #{createtime,jdbcType=VARCHAR}, 
+      #{updatetime,jdbcType=VARCHAR}, #{dotime,jdbcType=VARCHAR}, #{logomeaning,jdbcType=LONGVARCHAR}, 
+      #{introduction,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yiche.psc.rpse.neo4jTools.common.domain.po.MasterbrandWithBLOBs">
+    insert into MasterBrand
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        Id,
+      </if>
+      <if test="name != null">
+        Name,
+      </if>
+      <if test="othername != null">
+        OtherName,
+      </if>
+      <if test="englishname != null">
+        EnglishName,
+      </if>
+      <if test="countryid != null">
+        CountryId,
+      </if>
+      <if test="logourl != null">
+        LogoUrl,
+      </if>
+      <if test="firstzimu != null">
+        FirstZiMu,
+      </if>
+      <if test="spell != null">
+        Spell,
+      </if>
+      <if test="allspell != null">
+        AllSpell,
+      </if>
+      <if test="namespell != null">
+        NameSpell,
+      </if>
+      <if test="nameallspell != null">
+        NameAllSpell,
+      </if>
+      <if test="salestatus != null">
+        SaleStatus,
+      </if>
+      <if test="isenabled != null">
+        IsEnabled,
+      </if>
+      <if test="isremoved != null">
+        IsRemoved,
+      </if>
+      <if test="createtime != null">
+        CreateTime,
+      </if>
+      <if test="updatetime != null">
+        UpdateTime,
+      </if>
+      <if test="dotime != null">
+        dotime,
+      </if>
+      <if test="logomeaning != null">
+        LogoMeaning,
+      </if>
+      <if test="introduction != null">
+        Introduction,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="othername != null">
+        #{othername,jdbcType=VARCHAR},
+      </if>
+      <if test="englishname != null">
+        #{englishname,jdbcType=VARCHAR},
+      </if>
+      <if test="countryid != null">
+        #{countryid,jdbcType=INTEGER},
+      </if>
+      <if test="logourl != null">
+        #{logourl,jdbcType=VARCHAR},
+      </if>
+      <if test="firstzimu != null">
+        #{firstzimu,jdbcType=CHAR},
+      </if>
+      <if test="spell != null">
+        #{spell,jdbcType=VARCHAR},
+      </if>
+      <if test="allspell != null">
+        #{allspell,jdbcType=VARCHAR},
+      </if>
+      <if test="namespell != null">
+        #{namespell,jdbcType=VARCHAR},
+      </if>
+      <if test="nameallspell != null">
+        #{nameallspell,jdbcType=VARCHAR},
+      </if>
+      <if test="salestatus != null">
+        #{salestatus,jdbcType=INTEGER},
+      </if>
+      <if test="isenabled != null">
+        #{isenabled,jdbcType=BIT},
+      </if>
+      <if test="isremoved != null">
+        #{isremoved,jdbcType=BIT},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="dotime != null">
+        #{dotime,jdbcType=VARCHAR},
+      </if>
+      <if test="logomeaning != null">
+        #{logomeaning,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="introduction != null">
+        #{introduction,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.yiche.psc.rpse.neo4jTools.common.domain.po.MasterbrandExample" resultType="java.lang.Integer">
+    select count(*) from MasterBrand
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update MasterBrand
+    <set>
+      <if test="record.id != null">
+        Id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null">
+        Name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.othername != null">
+        OtherName = #{record.othername,jdbcType=VARCHAR},
+      </if>
+      <if test="record.englishname != null">
+        EnglishName = #{record.englishname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.countryid != null">
+        CountryId = #{record.countryid,jdbcType=INTEGER},
+      </if>
+      <if test="record.logourl != null">
+        LogoUrl = #{record.logourl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.firstzimu != null">
+        FirstZiMu = #{record.firstzimu,jdbcType=CHAR},
+      </if>
+      <if test="record.spell != null">
+        Spell = #{record.spell,jdbcType=VARCHAR},
+      </if>
+      <if test="record.allspell != null">
+        AllSpell = #{record.allspell,jdbcType=VARCHAR},
+      </if>
+      <if test="record.namespell != null">
+        NameSpell = #{record.namespell,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nameallspell != null">
+        NameAllSpell = #{record.nameallspell,jdbcType=VARCHAR},
+      </if>
+      <if test="record.salestatus != null">
+        SaleStatus = #{record.salestatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.isenabled != null">
+        IsEnabled = #{record.isenabled,jdbcType=BIT},
+      </if>
+      <if test="record.isremoved != null">
+        IsRemoved = #{record.isremoved,jdbcType=BIT},
+      </if>
+      <if test="record.createtime != null">
+        CreateTime = #{record.createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updatetime != null">
+        UpdateTime = #{record.updatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dotime != null">
+        dotime = #{record.dotime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.logomeaning != null">
+        LogoMeaning = #{record.logomeaning,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.introduction != null">
+        Introduction = #{record.introduction,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update MasterBrand
+    set Id = #{record.id,jdbcType=INTEGER},
+      Name = #{record.name,jdbcType=VARCHAR},
+      OtherName = #{record.othername,jdbcType=VARCHAR},
+      EnglishName = #{record.englishname,jdbcType=VARCHAR},
+      CountryId = #{record.countryid,jdbcType=INTEGER},
+      LogoUrl = #{record.logourl,jdbcType=VARCHAR},
+      FirstZiMu = #{record.firstzimu,jdbcType=CHAR},
+      Spell = #{record.spell,jdbcType=VARCHAR},
+      AllSpell = #{record.allspell,jdbcType=VARCHAR},
+      NameSpell = #{record.namespell,jdbcType=VARCHAR},
+      NameAllSpell = #{record.nameallspell,jdbcType=VARCHAR},
+      SaleStatus = #{record.salestatus,jdbcType=INTEGER},
+      IsEnabled = #{record.isenabled,jdbcType=BIT},
+      IsRemoved = #{record.isremoved,jdbcType=BIT},
+      CreateTime = #{record.createtime,jdbcType=VARCHAR},
+      UpdateTime = #{record.updatetime,jdbcType=VARCHAR},
+      dotime = #{record.dotime,jdbcType=VARCHAR},
+      LogoMeaning = #{record.logomeaning,jdbcType=LONGVARCHAR},
+      Introduction = #{record.introduction,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update MasterBrand
+    set Id = #{record.id,jdbcType=INTEGER},
+      Name = #{record.name,jdbcType=VARCHAR},
+      OtherName = #{record.othername,jdbcType=VARCHAR},
+      EnglishName = #{record.englishname,jdbcType=VARCHAR},
+      CountryId = #{record.countryid,jdbcType=INTEGER},
+      LogoUrl = #{record.logourl,jdbcType=VARCHAR},
+      FirstZiMu = #{record.firstzimu,jdbcType=CHAR},
+      Spell = #{record.spell,jdbcType=VARCHAR},
+      AllSpell = #{record.allspell,jdbcType=VARCHAR},
+      NameSpell = #{record.namespell,jdbcType=VARCHAR},
+      NameAllSpell = #{record.nameallspell,jdbcType=VARCHAR},
+      SaleStatus = #{record.salestatus,jdbcType=INTEGER},
+      IsEnabled = #{record.isenabled,jdbcType=BIT},
+      IsRemoved = #{record.isremoved,jdbcType=BIT},
+      CreateTime = #{record.createtime,jdbcType=VARCHAR},
+      UpdateTime = #{record.updatetime,jdbcType=VARCHAR},
+      dotime = #{record.dotime,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <resultMap id="BaseResultMap" type="com.yiche.psc.rpse.neo4jTools.common.domain.po.Masterbrand">
+    <result column="Id" jdbcType="INTEGER" property="id" />
+    <result column="Name" jdbcType="VARCHAR" property="name" />
+    <result column="OtherName" jdbcType="VARCHAR" property="othername" />
+    <result column="EnglishName" jdbcType="VARCHAR" property="englishname" />
+    <result column="CountryId" jdbcType="INTEGER" property="countryid" />
+    <result column="LogoUrl" jdbcType="VARCHAR" property="logourl" />
+    <result column="FirstZiMu" jdbcType="CHAR" property="firstzimu" />
+    <result column="Spell" jdbcType="VARCHAR" property="spell" />
+    <result column="AllSpell" jdbcType="VARCHAR" property="allspell" />
+    <result column="NameSpell" jdbcType="VARCHAR" property="namespell" />
+    <result column="NameAllSpell" jdbcType="VARCHAR" property="nameallspell" />
+    <result column="SaleStatus" jdbcType="INTEGER" property="salestatus" />
+    <result column="IsEnabled" jdbcType="BIT" property="isenabled" />
+    <result column="IsRemoved" jdbcType="BIT" property="isremoved" />
+    <result column="CreateTime" jdbcType="VARCHAR" property="createtime" />
+    <result column="UpdateTime" jdbcType="VARCHAR" property="updatetime" />
+    <result column="dotime" jdbcType="VARCHAR" property="dotime" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yiche.psc.rpse.neo4jTools.common.domain.po.MasterbrandWithBLOBs">
+    <result column="LogoMeaning" jdbcType="LONGVARCHAR" property="logomeaning" />
+    <result column="Introduction" jdbcType="LONGVARCHAR" property="introduction" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    Id, Name, OtherName, EnglishName, CountryId, LogoUrl, FirstZiMu, Spell, AllSpell, 
+    NameSpell, NameAllSpell, SaleStatus, IsEnabled, IsRemoved, CreateTime, UpdateTime, 
+    dotime
+  </sql>
+  <sql id="Blob_Column_List">
+    LogoMeaning, Introduction
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.yiche.psc.rpse.neo4jTools.common.domain.po.MasterbrandExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from MasterBrand
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.yiche.psc.rpse.neo4jTools.common.domain.po.MasterbrandExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from MasterBrand
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.yiche.psc.rpse.neo4jTools.common.domain.po.MasterbrandExample">
+    delete from MasterBrand
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.yiche.psc.rpse.neo4jTools.common.domain.po.MasterbrandWithBLOBs">
+    insert into MasterBrand (Id, Name, OtherName, 
+      EnglishName, CountryId, LogoUrl, 
+      FirstZiMu, Spell, AllSpell, 
+      NameSpell, NameAllSpell, SaleStatus, 
+      IsEnabled, IsRemoved, CreateTime, 
+      UpdateTime, dotime, LogoMeaning, 
+      Introduction)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{othername,jdbcType=VARCHAR}, 
+      #{englishname,jdbcType=VARCHAR}, #{countryid,jdbcType=INTEGER}, #{logourl,jdbcType=VARCHAR}, 
+      #{firstzimu,jdbcType=CHAR}, #{spell,jdbcType=VARCHAR}, #{allspell,jdbcType=VARCHAR}, 
+      #{namespell,jdbcType=VARCHAR}, #{nameallspell,jdbcType=VARCHAR}, #{salestatus,jdbcType=INTEGER}, 
+      #{isenabled,jdbcType=BIT}, #{isremoved,jdbcType=BIT}, #{createtime,jdbcType=VARCHAR}, 
+      #{updatetime,jdbcType=VARCHAR}, #{dotime,jdbcType=VARCHAR}, #{logomeaning,jdbcType=LONGVARCHAR}, 
+      #{introduction,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yiche.psc.rpse.neo4jTools.common.domain.po.MasterbrandWithBLOBs">
+    insert into MasterBrand
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        Id,
+      </if>
+      <if test="name != null">
+        Name,
+      </if>
+      <if test="othername != null">
+        OtherName,
+      </if>
+      <if test="englishname != null">
+        EnglishName,
+      </if>
+      <if test="countryid != null">
+        CountryId,
+      </if>
+      <if test="logourl != null">
+        LogoUrl,
+      </if>
+      <if test="firstzimu != null">
+        FirstZiMu,
+      </if>
+      <if test="spell != null">
+        Spell,
+      </if>
+      <if test="allspell != null">
+        AllSpell,
+      </if>
+      <if test="namespell != null">
+        NameSpell,
+      </if>
+      <if test="nameallspell != null">
+        NameAllSpell,
+      </if>
+      <if test="salestatus != null">
+        SaleStatus,
+      </if>
+      <if test="isenabled != null">
+        IsEnabled,
+      </if>
+      <if test="isremoved != null">
+        IsRemoved,
+      </if>
+      <if test="createtime != null">
+        CreateTime,
+      </if>
+      <if test="updatetime != null">
+        UpdateTime,
+      </if>
+      <if test="dotime != null">
+        dotime,
+      </if>
+      <if test="logomeaning != null">
+        LogoMeaning,
+      </if>
+      <if test="introduction != null">
+        Introduction,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="othername != null">
+        #{othername,jdbcType=VARCHAR},
+      </if>
+      <if test="englishname != null">
+        #{englishname,jdbcType=VARCHAR},
+      </if>
+      <if test="countryid != null">
+        #{countryid,jdbcType=INTEGER},
+      </if>
+      <if test="logourl != null">
+        #{logourl,jdbcType=VARCHAR},
+      </if>
+      <if test="firstzimu != null">
+        #{firstzimu,jdbcType=CHAR},
+      </if>
+      <if test="spell != null">
+        #{spell,jdbcType=VARCHAR},
+      </if>
+      <if test="allspell != null">
+        #{allspell,jdbcType=VARCHAR},
+      </if>
+      <if test="namespell != null">
+        #{namespell,jdbcType=VARCHAR},
+      </if>
+      <if test="nameallspell != null">
+        #{nameallspell,jdbcType=VARCHAR},
+      </if>
+      <if test="salestatus != null">
+        #{salestatus,jdbcType=INTEGER},
+      </if>
+      <if test="isenabled != null">
+        #{isenabled,jdbcType=BIT},
+      </if>
+      <if test="isremoved != null">
+        #{isremoved,jdbcType=BIT},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="dotime != null">
+        #{dotime,jdbcType=VARCHAR},
+      </if>
+      <if test="logomeaning != null">
+        #{logomeaning,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="introduction != null">
+        #{introduction,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.yiche.psc.rpse.neo4jTools.common.domain.po.MasterbrandExample" resultType="java.lang.Integer">
+    select count(*) from MasterBrand
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update MasterBrand
+    <set>
+      <if test="record.id != null">
+        Id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null">
+        Name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.othername != null">
+        OtherName = #{record.othername,jdbcType=VARCHAR},
+      </if>
+      <if test="record.englishname != null">
+        EnglishName = #{record.englishname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.countryid != null">
+        CountryId = #{record.countryid,jdbcType=INTEGER},
+      </if>
+      <if test="record.logourl != null">
+        LogoUrl = #{record.logourl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.firstzimu != null">
+        FirstZiMu = #{record.firstzimu,jdbcType=CHAR},
+      </if>
+      <if test="record.spell != null">
+        Spell = #{record.spell,jdbcType=VARCHAR},
+      </if>
+      <if test="record.allspell != null">
+        AllSpell = #{record.allspell,jdbcType=VARCHAR},
+      </if>
+      <if test="record.namespell != null">
+        NameSpell = #{record.namespell,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nameallspell != null">
+        NameAllSpell = #{record.nameallspell,jdbcType=VARCHAR},
+      </if>
+      <if test="record.salestatus != null">
+        SaleStatus = #{record.salestatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.isenabled != null">
+        IsEnabled = #{record.isenabled,jdbcType=BIT},
+      </if>
+      <if test="record.isremoved != null">
+        IsRemoved = #{record.isremoved,jdbcType=BIT},
+      </if>
+      <if test="record.createtime != null">
+        CreateTime = #{record.createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updatetime != null">
+        UpdateTime = #{record.updatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dotime != null">
+        dotime = #{record.dotime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.logomeaning != null">
+        LogoMeaning = #{record.logomeaning,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.introduction != null">
+        Introduction = #{record.introduction,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update MasterBrand
+    set Id = #{record.id,jdbcType=INTEGER},
+      Name = #{record.name,jdbcType=VARCHAR},
+      OtherName = #{record.othername,jdbcType=VARCHAR},
+      EnglishName = #{record.englishname,jdbcType=VARCHAR},
+      CountryId = #{record.countryid,jdbcType=INTEGER},
+      LogoUrl = #{record.logourl,jdbcType=VARCHAR},
+      FirstZiMu = #{record.firstzimu,jdbcType=CHAR},
+      Spell = #{record.spell,jdbcType=VARCHAR},
+      AllSpell = #{record.allspell,jdbcType=VARCHAR},
+      NameSpell = #{record.namespell,jdbcType=VARCHAR},
+      NameAllSpell = #{record.nameallspell,jdbcType=VARCHAR},
+      SaleStatus = #{record.salestatus,jdbcType=INTEGER},
+      IsEnabled = #{record.isenabled,jdbcType=BIT},
+      IsRemoved = #{record.isremoved,jdbcType=BIT},
+      CreateTime = #{record.createtime,jdbcType=VARCHAR},
+      UpdateTime = #{record.updatetime,jdbcType=VARCHAR},
+      dotime = #{record.dotime,jdbcType=VARCHAR},
+      LogoMeaning = #{record.logomeaning,jdbcType=LONGVARCHAR},
+      Introduction = #{record.introduction,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update MasterBrand
+    set Id = #{record.id,jdbcType=INTEGER},
+      Name = #{record.name,jdbcType=VARCHAR},
+      OtherName = #{record.othername,jdbcType=VARCHAR},
+      EnglishName = #{record.englishname,jdbcType=VARCHAR},
+      CountryId = #{record.countryid,jdbcType=INTEGER},
+      LogoUrl = #{record.logourl,jdbcType=VARCHAR},
+      FirstZiMu = #{record.firstzimu,jdbcType=CHAR},
+      Spell = #{record.spell,jdbcType=VARCHAR},
+      AllSpell = #{record.allspell,jdbcType=VARCHAR},
+      NameSpell = #{record.namespell,jdbcType=VARCHAR},
+      NameAllSpell = #{record.nameallspell,jdbcType=VARCHAR},
+      SaleStatus = #{record.salestatus,jdbcType=INTEGER},
+      IsEnabled = #{record.isenabled,jdbcType=BIT},
+      IsRemoved = #{record.isremoved,jdbcType=BIT},
+      CreateTime = #{record.createtime,jdbcType=VARCHAR},
+      UpdateTime = #{record.updatetime,jdbcType=VARCHAR},
+      dotime = #{record.dotime,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

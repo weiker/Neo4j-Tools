@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- if debug set to true, context info always print
+ otherwise the contex info will print when error occour -->
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <property name="logRoot" value="${log.base}"/>
+    <property name="appName" value="${app.name}"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{40} [%file : %line] - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </layout>
+    </appender>
+
+    <!-- 日志文件-->
+    <appender name="Std.out" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${logRoot}/${appName}/logs/stdout.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logRoot}/${appName}/logs/stdout.log.%d{yyyyMMddHH}</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{40} [%file : %line] - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="Std.err" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${logRoot}/${appName}/logs/stderr.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logRoot}/${appName}/logs/stderr.log.%d{yyyyMMddHH}</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{40} [%file : %line] - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="api" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${logRoot}/${appName}/logs/api.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logRoot}/${appName}/logs/api.log.%d{yyyyMMddHH}</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{40} [%file : %line] - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+
+    <appender name="sql" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${logRoot}/${appName}/logs/sql.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logRoot}/${appName}/logs/sql.log.%d{yyyyMMddHH}</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{40} [%file : %line] - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="http" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${logRoot}/${appName}/logs/http.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logRoot}/${appName}/logs/http.log.%d{yyyyMMddHH}</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{40} [%file : %line] - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="push" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${logRoot}/${appName}/logs/push.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logRoot}/${appName}/logs/push.%d{yyyy-MM-dd-HH}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{40} [%file : %line] - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <logger name="push_logger" additivity="false" level="INFO">
+        <appender-ref ref="push"/>
+    </logger>
+
+    <logger name="druid.sql.Statement" additivity="false" level="INFO">
+        <appender-ref ref="sql"/>
+    </logger>
+
+    <logger name="org.springframework" level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+    <logger name="java.sql" level="DEBUG" additivity="false">
+        <appender-ref ref="sql"/>
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="Std.out"/>
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</configuration>
