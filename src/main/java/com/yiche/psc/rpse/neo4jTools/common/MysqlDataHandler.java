@@ -64,7 +64,7 @@ public class MysqlDataHandler {
     }
 
     public Set<Style> getStyleInfo() {
-        String sql = "SELECT *   FROM Style";
+        String sql = "SELECT *   FROM Style order by styleId limit ";
         ResultSet resultSet = getResult(sql);
         HashSet<Style> styleHashSet = new HashSet<Style>();
         try {

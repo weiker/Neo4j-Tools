@@ -13,10 +13,10 @@ import java.sql.SQLException;
 public class MysqlConnector {
 
 
-    public static final String url = "jdbc:mysql://192.168.56.97/cigdc_yiche";
+    public static final String url = "jdbc:mysql://172.21.0.70/cigdc_yiche";
     public static final String name = "com.mysql.jdbc.Driver";
-    public static final String user = "root";
-    public static final String password = "xyj2016";
+    public static final String user = "carapiread";
+    public static final String password = "xwGEXVKzDEJGDSsX";
 
     private static DruidDataSource ds;
     public DruidPooledConnection conn = null;

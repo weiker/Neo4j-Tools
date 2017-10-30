@@ -12,10 +12,10 @@ import java.util.Properties;
 
 public class Neo4jConnector {
 
-    private static String boltUrl="jdbc:neo4j:bolt://192.168.56.162:7687";
-    private String jdbcURL="jdbc:neo4j:http://192.168.56.162:7474/";
-    private static String username="weiqiang";
-    private static String password="12345678";
+    private static String boltUrl="jdbc:neo4j:bolt://172.20.8.101:7687";
+    private String jdbcURL="jdbc:neo4j:http://172.20.8.101:7474/";
+    private static String username="pscai";
+    private static String password="bitauto";
     private static String driverName="org.neo4j.jdbc.Driver";
     private Session session;
     private Driver driver;
