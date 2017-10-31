@@ -1,61 +1,82 @@
 package com.yiche.psc.rpse.neo4jTools.core;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.alibaba.druid.pool.DruidDataSourceFactory;
 import com.alibaba.druid.pool.DruidPooledConnection;
-import org.neo4j.driver.v1.*;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.util.Properties;
+import java.sql.SQLException;
 
-
+@Configuration
 public class Neo4jConnector {
 
-    private static String boltUrl="jdbc:neo4j:bolt://192.168.56.162:7687";
-    private String jdbcURL="jdbc:neo4j:http://192.168.56.162:7474/";
-    private static String username="weiqiang";
-    private static String password="12345678";
-    private static String driverName="org.neo4j.jdbc.Driver";
-    private Session session;
-    private Driver driver;
-    private static DruidDataSource ds;
+    @Value("${datasource.jdbcUrl.neo4j}")
+    private  String boltUrl;
+//    private String jdbcURL="jdbc:neo4j:http://192.168.56.162:7474/";
+    @Value("${datasource.user.neo4j}")
+    private  String username;
+    @Value("${datasource.password.neo4j}")
+    private  String password;
+    @Value("${datasource.driverClass.neo4j}")
+    private  String driverName;
+//    @Autowired
+    private static DruidDataSource dsNeo4j;
+
     public DruidPooledConnection conn = null;
 
-    public Session getSession() {
-        return session;
-    }
 
-    public void setSession(Session session) {
-        this.session = session;
-    }
-    static {
+    @Bean(name = "dsNeo4j")
+//    @Scope("prototype")
+    public DruidDataSource dataSourceNeo4j() {
         try {
-            ds = new DruidDataSource();
-            ds.setDriverClassName(driverName);
-            ds.setUsername(username);
-            ds.setPassword(password);
-            ds.setUrl(boltUrl);
-            ds.setTestWhileIdle(false);
-            ds.setMaxActive(2);
-            ds.setInitialSize(2);
-            ds.setMaxWait(60000);
+            dsNeo4j = new DruidDataSource();
+            dsNeo4j.setDriverClassName(driverName);
+            dsNeo4j.setUsername(username);
+            dsNeo4j.setPassword(password);
+            dsNeo4j.setUrl(boltUrl);
+            dsNeo4j.setTestWhileIdle(false);
+            dsNeo4j.setMaxActive(2);
+            dsNeo4j.setInitialSize(2);
+            dsNeo4j.setMaxWait(60000);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return dsNeo4j;
     }
 
+//    static {
+//        try {
+//            dsNeo4j = new DruidDataSource();
+//            dsNeo4j.setDriverClassName(driverName);
+//            dsNeo4j.setUsername(username);
+//            dsNeo4j.setPassword(password);
+//            dsNeo4j.setUrl(boltUrl);
+//            dsNeo4j.setTestWhileIdle(false);
+//            dsNeo4j.setMaxActive(2);
+//            dsNeo4j.setInitialSize(2);
+//            dsNeo4j.setMaxWait(60000);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     public DruidPooledConnection getConnection() {
         try {
-            conn=ds.getConnection();
+            conn=dsNeo4j.getConnection();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return conn;
     }
+
     public void close() {
-            this.session.close();
-            this.driver.close();
+        try {
+            this.conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
+
+
 }

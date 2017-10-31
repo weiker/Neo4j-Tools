@@ -15,9 +15,6 @@ import org.springframework.util.PropertyPlaceholderHelper;
 
 import java.util.ArrayList;
 import java.util.List;
-@Configuration
-@PropertySource(value = "classpath:application.properties")
-@ComponentScan(basePackages="com.yiche.psc.rpse" )
 public class ModelInfoHandler {
     private Logger logger = LoggerFactory.getLogger(ModelInfoHandler.class);
     @Autowired

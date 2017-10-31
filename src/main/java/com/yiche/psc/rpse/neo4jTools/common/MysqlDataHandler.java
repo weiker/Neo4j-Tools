@@ -2,27 +2,24 @@ package com.yiche.psc.rpse.neo4jTools.common;
 
 import com.yiche.psc.rpse.neo4jTools.common.domain.ES.StyleInfo;
 import com.yiche.psc.rpse.neo4jTools.common.domain.po.Style;
-import com.yiche.psc.rpse.neo4jTools.common.domain.po.Styleproperty;
 import com.yiche.psc.rpse.neo4jTools.core.MysqlConnector;
-import com.yiche.psc.rpse.neo4jTools.core.SearchStyleInfoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import javax.xml.transform.Result;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
-
+@Service("MysqlDataHandler")
 public class MysqlDataHandler {
 
+    @Autowired
     private MysqlConnector mysqlConnector;
 
     public ResultSet getResult(String sql) {
         ResultSet resultSet = null;
-        if(mysqlConnector==null){
-            mysqlConnector = new MysqlConnector();
-        }
-        Connection connection = mysqlConnector.getConn();
+        Connection connection = mysqlConnector.getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             resultSet = preparedStatement.executeQuery();
@@ -42,7 +39,6 @@ public class MysqlDataHandler {
         Map<String, String> propertyMap = new HashMap<>();
         try {
             while (resultSet.next()) {
-
                 String valueString=resultSet.getInt(2)+"="+resultSet.getInt(4);
                 if(propertyMap.containsKey("PropertyMap")){
                     valueString=propertyMap.get("PropertyMap")+","+valueString;
@@ -64,7 +60,7 @@ public class MysqlDataHandler {
     }
 
     public Set<Style> getStyleInfo() {
-        String sql = "SELECT *   FROM Style";
+        String sql = "SELECT  *   FROM Style";
         ResultSet resultSet = getResult(sql);
         HashSet<Style> styleHashSet = new HashSet<Style>();
         try {
@@ -101,21 +97,6 @@ public class MysqlDataHandler {
         }
         return styleHashSet;
 
-    }
-
-    public Map<String, String> putAutoHomeData(Map<String, String> property, int styleID) {
-        SearchStyleInfoService searchStyleInfoService = new SearchStyleInfoService();
-        StyleInfo styleInfo = searchStyleInfoService.getStyleInfo("test", styleID);
-        property.put("comfortable_long_comment", styleInfo.getComfortable().getZhiJia_description());
-        property.put("comfortable_long_comment", styleInfo.getComfortable().getZhiJia_description());
-        property.put("comfortable_long_comment", styleInfo.getComfortable().getZhiJia_description());
-        property.put("comfortable_long_comment", styleInfo.getComfortable().getZhiJia_description());
-        property.put("comfortable_long_comment", styleInfo.getComfortable().getZhiJia_description());
-        property.put("comfortable_long_comment", styleInfo.getComfortable().getZhiJia_description());
-        property.put("comfortable_long_comment", styleInfo.getComfortable().getZhiJia_description());
-        property.put("comfortable_long_comment", styleInfo.getComfortable().getZhiJia_description());
-        property.put("comfortable_long_comment", styleInfo.getComfortable().getZhiJia_description());
-        return property;
     }
 
     public static void main(String[] args) {

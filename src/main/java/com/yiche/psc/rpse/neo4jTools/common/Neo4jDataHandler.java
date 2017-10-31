@@ -2,27 +2,21 @@ package com.yiche.psc.rpse.neo4jTools.common;
 
 import com.yiche.psc.rpse.neo4jTools.core.Neo4jConnector;
 import org.neo4j.driver.v1.Session;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
+@Service("Neo4jDataHandler")
 public class Neo4jDataHandler {
 
+    @Autowired
     private Neo4jConnector neo4jConnector;
 
-    public Session initSession(){
-        if(neo4jConnector==null){
-            neo4jConnector=new Neo4jConnector();
-        }
-        return neo4jConnector.getSession();
-    }
-
     public ResultSet excuteCypher(String cypher){
-        if(neo4jConnector==null){
-            neo4jConnector=new Neo4jConnector();
-        }
         ResultSet resultSet=null;
         try {
             neo4jConnector.conn=neo4jConnector.getConnection();
@@ -43,11 +37,7 @@ public class Neo4jDataHandler {
     }
 
     public void updateNodeProperty(String type, Map<String,String> property, Map<String,String> condition){
-//        Session session=initSession();
         String cypher=updateProperties(type,property,condition);
-//        StatementResult statementResult=session.run(cypher);
-//        session.close();
-
         excuteCypher(cypher);
         closeConnection();
     }
@@ -73,28 +63,8 @@ public class Neo4jDataHandler {
         return stringBuilder.toString();
     }
 
-    public String unwindProperty(String type,Map<String,String> property,Map<String,String> condition){
-        StringBuilder stringBuilder=new StringBuilder();
-        stringBuilder.append("{ {id:"+type+" , ");
-//        set conditions
-        for(Map.Entry entry:condition.entrySet()){
-            if(entry.getKey()!=null&&entry.getValue()!=null)
-                stringBuilder.append("`").append(entry.getKey()).append("`:").append(entry.getValue()).append(",");
-        }
-        stringBuilder.deleteCharAt(stringBuilder.lastIndexOf(","));
-        stringBuilder.append("}) ON MATCH SET ");
-//      set properties
-        for(Map.Entry entry:property.entrySet()){
-            if(entry.getKey()!=null&&entry.getValue()!=null)
-                stringBuilder.append("a.`").append(entry.getKey()).append("`='").append(entry.getValue()).append("',");
-        }
-        stringBuilder.deleteCharAt(stringBuilder.lastIndexOf(","));
-        stringBuilder.append(";");
-        System.out.println(stringBuilder.toString());
-        return stringBuilder.toString();
-    }
 
-    public static void main(String[] args) {
+    public  void test(String[] args) {
         String a="match(a:Brand) return count(a)";
         Neo4jDataHandler neo4jDataHandler=new Neo4jDataHandler();
         ResultSet resultSet=neo4jDataHandler.excuteCypher(a);

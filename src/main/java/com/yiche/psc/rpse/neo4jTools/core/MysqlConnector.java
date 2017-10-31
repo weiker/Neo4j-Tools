@@ -2,82 +2,67 @@ package com.yiche.psc.rpse.neo4jTools.core;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.pool.DruidPooledConnection;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-
+@Configuration
 public class MysqlConnector {
 
 
-    public static final String url = "jdbc:mysql://192.168.56.97/cigdc_yiche";
-    public static final String name = "com.mysql.jdbc.Driver";
-    public static final String user = "root";
-    public static final String password = "xyj2016";
+    @Value("${datasource.jdbcUrl.mysql}")
+    public   String url;
+    @Value("${datasource.driverClass.mysql}")
+    public   String name;
+    @Value("${datasource.user.mysql}")
+    public   String user;
+    @Value("${datasource.password.mysql}")
+    public   String password;
 
-    private static DruidDataSource ds;
+    private  DruidDataSource dsMysql;
+
     public DruidPooledConnection conn = null;
 
-    public DruidPooledConnection getConn() {
+
+    @Bean(name = "dsMysql" )
+//    @Scope("prototype")
+    public DruidDataSource dataSourceMysql() {
+        try {
+            dsMysql = new DruidDataSource();
+            dsMysql.setDriverClassName(name);
+            dsMysql.setUsername(user);
+            dsMysql.setPassword(password);
+            dsMysql.setUrl(url);
+            dsMysql.setTestWhileIdle(false);
+            dsMysql.setMaxActive(2);
+            dsMysql.setInitialSize(2);
+            dsMysql.setMaxWait(60000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+            return dsMysql;
+        }
+
+    public DruidPooledConnection getConnection() {
+        try {
+            conn=dsMysql.getConnection();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return conn;
-    }
-
-    public void setConn(DruidPooledConnection conn) {
-        this.conn = conn;
-    }
-
-    public PreparedStatement getPst() {
-        return pst;
-    }
-
-    public void setPst(PreparedStatement pst) {
-        this.pst = pst;
-    }
-
-    public PreparedStatement pst = null;
-    static {
-        try {
-            ds = new DruidDataSource();
-            ds.setDriverClassName(name);
-            ds.setUsername(user);
-            ds.setPassword(password);
-            ds.setUrl(url);
-            ds.setTestWhileIdle(false);
-            ds.setMaxActive(2);
-            ds.setInitialSize(2);
-            ds.setMaxWait(60000);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    public MysqlConnector() {
-        try {
-//            Class.forName(name);//指定连接类型
-//            conn = DriverManager.getConnection(url, user, password);//获取连接
-            conn=ds.getConnection();
-//            pst = conn.prepareStatement(sql);//准备执行语句
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Bean
-    public DataSource dataSource() {
-        DruidDataSource ds = new DruidDataSource();
-        ds.setDriverClassName(this.name);
-        ds.setUsername(user);
-        ds.setPassword(password);
-        ds.setUrl(url);
-        return ds;
     }
 
     public void close() {
         try {
             this.conn.close();
-            this.pst.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

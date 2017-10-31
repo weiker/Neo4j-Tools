@@ -23,25 +23,24 @@ import java.io.IOException;
 /*
  * @see http://mybatis.github.io/spring/mappers.html
  */
-@Configuration
-@MapperScan(basePackages = "com.yiche.psc.rpse.neo4jTools.common.domain.dao")
+
 public class MybatisConfig {
 
 	private static Logger log = LoggerFactory.getLogger(MybatisConfig.class);
 
-	@Value("${datasource.driverClass}")
+	@Value("${datasource.driverClass.mysql}")
 //	@Value("com.mysql.jdbc.Driver")
 	private String jdbcDriver;
 
-	@Value("${datasource.user}")
+	@Value("${datasource.user.mysql}")
 //	@Value("root")
 	private String username;
 
-	@Value("${datasource.password}")
+	@Value("${datasource.password.mysql}")
 //	@Value("xyj2016")
 	private String password;
 
-	@Value("${datasource.jdbcUrl}")
+	@Value("${datasource.jdbcUrl.mysql}")
 //	@Value("jdbc:mysql://192.168.56.97/cigdc_yiche?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&autoReconnectForPools=true")
 	private String url;
 
